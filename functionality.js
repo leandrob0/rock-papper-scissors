@@ -1,3 +1,7 @@
+//THIS IS HORRIBLE CODE BE AWARE.
+
+
+
 function computerPlay()
 {
     let number = Math.floor(Math.random() * 3) + 1;
