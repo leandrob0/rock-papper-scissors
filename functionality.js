@@ -16,22 +16,22 @@ function computerPlay()
 
 function playRound(playerSelection, computerSelection)
 {
-    if(playerSelection.toLowerCase() === 'rock' && computerSelection.toLowerCase() === 'scissors')
+    if(playerSelection === 'Rock' && computerSelection === 'Scissors')
     {
         return 1;
-    } else if(playerSelection.toLowerCase() === 'rock' && computerSelection.toLowerCase() === 'paper')
+    } else if(playerSelection === 'Rock' && computerSelection === 'Paper')
     {
         return 2;
-    }else if(playerSelection.toLowerCase() === 'paper' && computerSelection.toLowerCase() === 'scissors')
+    }else if(playerSelection === 'Paper' && computerSelection === 'Scissors')
     {
         return 2;
-    }else if(playerSelection.toLowerCase() === 'paper' && computerSelection.toLowerCase() === 'rock')
+    }else if(playerSelection === 'Paper' && computerSelection === 'Rock')
     {
         return 1;
-    }else if(playerSelection.toLowerCase() === 'scissors' && computerSelection.toLowerCase() === 'rock')
+    }else if(playerSelection === 'Scissors' && computerSelection === 'Rock')
     {
         return 2;
-    }else if(playerSelection.toLowerCase() === 'scissors' && computerSelection.toLowerCase() === 'paper')
+    }else if(playerSelection === 'Scissors' && computerSelection === 'Paper')
     {
         return 1;
     } else {
@@ -39,39 +39,62 @@ function playRound(playerSelection, computerSelection)
     }
 }
 
-function game()
-{
-    let wins = 0;
-    let lost = 0;
+let playerSelection;
 
-    for(let i = 0; i < 5;i++)
+const divResult = document.createElement('div');
+const container = document.querySelector('#results-div');
+const final = document.querySelector('#final');
+
+divResult.classList.add('results');
+
+let wins = 0, lost = 0;
+let finished = false;
+
+const buttons = document.querySelectorAll('.btn');
+buttons.forEach(button => button.addEventListener('click', () => {
+    
+    if(wins >= 5 && !finished)
     {
-        let playerSelection = prompt("Rock, paper or scissors? ").toString();
-        let whoWon = playRound(playerSelection, computerPlay());
-        
-        if(whoWon == 1)
+        let celebration = document.createElement('h3');
+        celebration.textContent = 'YOU WON THE GAME!';
+        finished = true;
+        final.appendChild(celebration);
+        return ; 
+    } else if(lost >= 5 && !finished)
+    {
+        let f = document.createElement('h3');
+        f.textContent = 'The computer won the game';
+        finished = true;
+        final.appendChild(f);
+        return ; 
+    }
+    
+    if(!finished)
+    {
+        playerSelection = button.textContent;
+
+        const result = document.createElement('p');
+        let play = playRound(playerSelection, computerPlay());
+
+        let phrase;
+
+        if(play === 1)
         {
+            phrase = "You win the round!";
             wins++;
-            console.log("You win the round!");
-        } else if(whoWon == 2)
+        } else if (play === 2)
         {
+            phrase = "You lose the round.";
             lost++;
-            console.log("You lost the round");
         } else {
-            console.log("Draw!");
+            phrase = "Draw";
         }
-        
+
+        result.textContent = `${phrase}`;
+        divResult.appendChild(result);
+
+        container.appendChild(divResult);
     }
 
-    if(wins > lost)
-    {
-        console.log("YOU WIN THE GAME!");
-    } else if(lost > wins)
-    {
-        console.log("You lost the game :(");
-    } else {
-        console.log("Its a draw!");
-    }
-}
-
-game();
+    return ;
+}));
